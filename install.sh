@@ -59,14 +59,6 @@ function install() {
     # store id
     id=$(balena exec $found_container sed -n 's/.*"gateway_ID": "\(.*\)",/\1/p' global_conf.json.sx1250.EU868)
 
-    if [ -d "$dir_path" ]; then
-        echo -e "${CYAN}Directory for ThingsIX exists${NC}"
-    else
-        echo -e "${RED}Directory does not exist${NC}"
-        echo -e "${RED}Directory will be created ...${NC}"
-        mkdir -p /etc/thingsix-forwarder
-    fi
-
     # create the gwmp-mux
     echo "${CYAN}Now we need to create the multiplexer to use Helium and ThingsIX${NC}"
     balena run -d --restart unless-stopped --network host --name gwmp-mux ghcr.io/thingsixfoundation/gwmp-mux:latest --host 1681 --client 127.0.0.1:1680 --client 127.0.0.1:1685
@@ -93,8 +85,7 @@ echo -e "${YELLOW}==============================================================
 echo -e "${GREEN}OS: BalenaOS ${NC}"
 echo -e "${GREEN}Created by: WantClue${NC}"
 echo -e "${YELLOW}================================================================${NC}"
-echo -e "${CYAN}1  - Installation of ThingsIX forwarder${NC}"
-echo -e "${CYAN}2  - Onboarding of ThingsIX Gateway${NC}"
+echo -e "${CYAN}1  - Installation of ThingsIX forwarder and onboard${NC}"
 echo -e "${CYAN}3  - Abort${NC}"
 echo -e "${YELLOW}================================================================${NC}"
 
