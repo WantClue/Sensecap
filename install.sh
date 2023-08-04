@@ -64,7 +64,7 @@ function install() {
     balena run -d --restart unless-stopped --network host --name gwmp-mux ghcr.io/thingsixfoundation/gwmp-mux:latest --host 1681 --client 127.0.0.1:1680 --client 127.0.0.1:1685
 
     # create thingsix-forwarder container
-    balena run -d --name thingsix-forwarder -p 1685:1680/udp --restart unless-stopped -v /mnt/data/thingsix-forwarder:/etc/thingsix-forwarder ghcr.io/thingsixfoundation/packet-handling/forwarder:latest --net=main
+    balena run -d --name thingsix-forwarder -p 1685:1680/udp --restart unless-stopped -v /mnt/data/thix:/etc/thingsix-forwarder ghcr.io/thingsixfoundation/packet-handling/forwarder:latest --net=main
 
     echo ="${CYAN}Now we have created everything. We need to restart the container quickly${NC}"
     sleep 5
