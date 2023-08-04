@@ -1,25 +1,17 @@
 #!/bin/bash
 
-#color codes
-RED='\033[1;31m'
-YELLOW='\033[1;33m'
-BLUE="\\033[38;5;27m"
-SEA="\\033[38;5;49m"
-GREEN='\033[1;32m'
-CYAN='\033[1;36m'
-NC='\033[0m'
 
 #paths
 
 
 function install() {
-    echo -e "${GREEN}Module: Install ThingsIX${NC}"
-	echo -e "${YELLOW}================================================================${NC}"
+    echo -e "Module: Install ThingsIX"
+	echo -e "================================================================"
 	if [[ "$USER" != "root" ]]; then
-		echo -e "${CYAN}You are currently logged in as ${GREEN}$USER${NC}"
-		echo -e "${CYAN}Please switch to the root account use command 'sudo su -'.${NC}"
-		echo -e "${YELLOW}================================================================${NC}"
-		echo -e "${NC}"
+		echo -e "You are currently logged in as $USER"
+		echo -e "Please switch to the root account use command 'sudo su -'."
+		echo -e "================================================================"
+		echo -e ""
 		exit
 	fi
 
@@ -45,10 +37,10 @@ function install() {
 
     # Check if a matching container was found
     if [ -n "$found_container" ]; then
-        echo "${GREEN}Found container with name: $found_container${NC}"
+        echo "Found container with name: $found_container"
     else
-        echo "${RED}No container with name starting with $container_name_prefix found.${NC}"
-        echo "${RED}Check your hotspot or reach out to WantClue for further information${NC}"
+        echo "No container with name starting with $container_name_prefix found."
+        echo "Check your hotspot or reach out to WantClue for further information"
         exit
     fi
 
@@ -60,34 +52,34 @@ function install() {
     id=$(balena exec $found_container sed -n 's/.*"gateway_ID": "\(.*\)",/\1/p' global_conf.json.sx1250.EU868)
 
     # create the gwmp-mux
-    echo "${CYAN}Now we need to create the multiplexer to use Helium and ThingsIX${NC}"
+    echo "Now we need to create the multiplexer to use Helium and ThingsIX"
     balena run -d --restart unless-stopped --network host --name gwmp-mux ghcr.io/thingsixfoundation/gwmp-mux:latest --host 1681 --client 127.0.0.1:1680 --client 127.0.0.1:1685
 
     # create thingsix-forwarder container
     balena run -d --name thingsix-forwarder -p 1685:1680/udp --restart unless-stopped -v /mnt/data/thix:/etc/thingsix-forwarder ghcr.io/thingsixfoundation/packet-handling/forwarder:latest --net=main
 
-    echo ="${CYAN}Now we have created everything. We need to restart the container quickly${NC}"
+    echo ="Now we have created everything. We need to restart the container quickly"
     sleep 5
     balena restart gwmp-mux
     balena restart $found_container
     
     # onboard the gateway to ThingsIX
-    echo ="${CYAN}Your local id is $id${NC}"
-    echo ="${CYAN}Please insert your Polygon Address to onboard this gateway to your wallet${NC}"
+    echo ="Your local id is $id"
+    echo ="Please insert your Polygon Address to onboard this gateway to your wallet"
     read wallet
     balena exec thingsix-forwarder ./forwarder onboard-and-push $id $wallet
 
-    echo ="${CYAN}Congratulations your device is now onboarded to ThingsIX${NC}"
+    echo ="Congratulations your device is now onboarded to ThingsIX"
 }
 
-echo -e "${BLUE}"
-echo -e "${YELLOW}================================================================${NC}"
-echo -e "${GREEN}OS: BalenaOS ${NC}"
-echo -e "${GREEN}Created by: WantClue${NC}"
-echo -e "${YELLOW}================================================================${NC}"
-echo -e "${CYAN}1  - Installation of ThingsIX forwarder and onboard${NC}"
-echo -e "${CYAN}3  - Abort${NC}"
-echo -e "${YELLOW}================================================================${NC}"
+echo -e ""
+echo -e "================================================================"
+echo -e "OS: BalenaOS "
+echo -e "Created by: WantClue"
+echo -e "================================================================"
+echo -e "1  - Installation of ThingsIX forwarder and onboard"
+echo -e "3  - Abort"
+echo -e "================================================================"
 
 read -rp "Pick an option and hit ENTER: "
 case "$REPLY" in
