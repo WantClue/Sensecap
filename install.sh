@@ -69,7 +69,7 @@ function install() {
     echo "Please insert your Polygon Address to onboard this gateway to your wallet"
     read wallet
     sleep 1
-    balena exec thingsix-forwarder ./forwarder onboard-and-push $id $wallet
+    balena exec thingsix-forwarder ./forwarder gateway onboard-and-push $id $wallet
 
     echo "Congratulations your device is now onboarded to ThingsIX"
 }
