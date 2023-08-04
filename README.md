@@ -27,6 +27,7 @@ chmod +x install.sh
 # Roadmap
 
 - [x] Dual Mining
+- [ ] Add overwrite safety
 - [ ] Adding Regional cases
 - [ ] Add Watchtower
 
