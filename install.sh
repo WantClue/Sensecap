@@ -58,18 +58,20 @@ function install() {
     # create thingsix-forwarder container
     balena run -d --name thingsix-forwarder -p 1685:1680/udp --restart unless-stopped -v /mnt/data/thix:/etc/thingsix-forwarder ghcr.io/thingsixfoundation/packet-handling/forwarder:latest --net=main
 
-    echo ="Now we have created everything. We need to restart the container quickly"
+    echo "Now we have created everything. We need to restart the container quickly"
     sleep 5
     balena restart gwmp-mux
     balena restart $found_container
+    sleep 1
     
     # onboard the gateway to ThingsIX
-    echo ="Your local id is $id"
-    echo ="Please insert your Polygon Address to onboard this gateway to your wallet"
+    echo "Your local id is $id"
+    echo "Please insert your Polygon Address to onboard this gateway to your wallet"
     read wallet
+    sleep 1
     balena exec thingsix-forwarder ./forwarder onboard-and-push $id $wallet
 
-    echo ="Congratulations your device is now onboarded to ThingsIX"
+    echo "Congratulations your device is now onboarded to ThingsIX"
 }
 
 echo -e ""
