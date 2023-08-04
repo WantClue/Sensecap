@@ -80,7 +80,7 @@ echo -e "OS: BalenaOS "
 echo -e "Created by: WantClue"
 echo -e "================================================================"
 echo -e "1  - Installation of ThingsIX forwarder and onboard"
-echo -e "3  - Abort"
+echo -e "2  - Abort"
 echo -e "================================================================"
 
 read -rp "Pick an option and hit ENTER: "
