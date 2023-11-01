@@ -33,4 +33,4 @@ chmod +x install.sh
 
 # Watch the video
 
-Link: 
+Link: https://youtu.be/2vdWt_-j6WU
